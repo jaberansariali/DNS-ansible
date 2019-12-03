@@ -1,2 +1,2 @@
 # DNS-ansible
-install dns with ansible 
+Install Powerdns with ansible 
