@@ -1,0 +1,68 @@
+---
+
+- block:
+
+  - name: Ensure the override directory exists (systemd)
+    file:
+      name: "/etc/systemd/system/dnsdist.service.d"
+      state: directory
+      owner: root
+      group: root
+
+  - name: Override the dnsdist unit (systemd)
+    template:
+      src: "override-service.systemd.conf.j2"
+      dest: "/etc/systemd/system/dnsdist.service.d/override.conf"
+      owner: root
+      group: root
+    notify: reload systemd and restart dnsdist
+
+  when: dnsdist_service_overrides != {}
+    and ansible_service_mgr == "systemd"
+
+- name: Create conf.d directory
+  file:
+    path: /etc/dnsdist/conf.d/
+    state: directory
+
+- name: Copy Main Config file
+  copy: src=dnsdist.conf dest=/etc/dnsdist/dnsdist.conf
+
+- name: Copy Other Config Files
+  copy: src={{ item }} dest=/etc/dnsdist/{{item}}
+  with_items:
+    - conf.d/dnsdist.logs.conf
+    - conf.d/dnsdist.console.conf
+    - conf.d/dnsdist.actions.conf
+    - conf.d/dnsdist.spoof.conf
+    - conf.d/dnsdist.acl.conf
+    - conf.d/dnsdist.cache.conf
+
+- name: DnsDist Listen Config
+  template:
+    src: "dnsdist.listen.conf.j2"
+    dest: "/etc/dnsdist/conf.d/dnsdist.listen.conf"
+    owner: root
+    group: root
+
+- name: DnsDist Distribute Policy
+  template:
+    src: "dnsdist.policy.conf.j2"
+    dest: "/etc/dnsdist/conf.d/dnsdist.policy.conf"
+    owner: root
+    group: root
+
+- name: DnsDist Backend Servers
+  template:
+    src: "dnsdist.servers.conf.j2"
+    dest: "/etc/dnsdist/conf.d/dnsdist.servers.conf"
+    owner: root
+    group: root
+
+- name: DnsDist WebServer Interfaces
+  template:
+    src: "dnsdist.webserver.conf.j2"
+    dest: "/etc/dnsdist/conf.d/dnsdist.webserver.conf"
+    owner: root
+    group: root
+

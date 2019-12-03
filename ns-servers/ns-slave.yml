@@ -1,0 +1,20 @@
+---
+ - name: Install TLD Servers
+   hosts: slaves
+   remote_user: root
+   # remote_user: user
+   # become: yes
+   # become_method: sudo
+   
+   vars_files:
+    - vars/slave.yml
+
+ 
+   roles:
+     - common
+     - netplan
+     - mysql
+     - pdns
+     - dnsdist
+     - keepalived
+     - reboot

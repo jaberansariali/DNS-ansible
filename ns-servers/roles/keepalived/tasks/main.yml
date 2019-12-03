@@ -1,0 +1,39 @@
+---
+# This role installs and sets up keepalived
+
+- name: Install keepalived (Centos)
+  yum: name=keepalived state=present
+  when: ansible_os_family == "RedHat"
+  tags: keepalived
+  notify: restart keepalived
+
+- name: Install keepalived (debian/ubuntu)
+  apt: name=keepalived state=latest
+  when: ansible_os_family == "Debian"
+  tags: keepalived
+  notify: restart keepalived
+
+- name: Copy Notify Script
+  copy: 
+    src: notify.sh 
+    dest: /etc/keepalived/notify.sh 
+    mode: 0755
+
+- name: DNS check script shell
+  template: 
+    src: dns-check.sh.j2
+    dest: /etc/keepalived/dns-check.sh
+    mode: 0755
+    owner: root
+    group: root
+  tags: keepalived
+  notify: restart keepalived
+
+- name: Configurar configuració de keepalived
+  template: src=keepalived.conf.j2 dest=/etc/keepalived/keepalived.conf
+  tags: keepalived
+  notify: restart keepalived
+
+- name: Start keepalived
+  service: name=keepalived state=started
+  tags: keepalived

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+IPAddress="{{ server_public_ipv4_address }}"
+DigBin="`which dig`"
+#TestDomain="{{ keepalived_test_domain }}"
+
+#Result=$(timeout 2s $DigBin +short @$IPAddress $TestDomain A)
+Result=$(timeout 2s $DigBin +short @$IPAddress)
+
+if [ -z "$Result" ]; then
+  exit 1
+else
+  exit 0
+fi

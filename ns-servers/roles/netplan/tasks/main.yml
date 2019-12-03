@@ -1,0 +1,26 @@
+---
+# tasks file for netplan-networking
+
+- name: Configure network interface
+  become: true
+  template:
+    src: iface.j2
+    dest: "/etc/netplan/{{ item.interface }}.yaml"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: "{{ netplan_interfaces }}"
+  notify:
+     - generate network config
+#    - apply network interface
+#    - restart networkd
+#    - restart resolved
+
+- name: Remove cloud-init netplan file
+  file:
+    state: absent
+    path: "/etc/netplan/50-cloud-init.yaml"
+
+#- name: Apply network interface configuration
+#  become: true
+#  shell: netplan apply

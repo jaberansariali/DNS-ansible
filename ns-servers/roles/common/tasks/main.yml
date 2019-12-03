@@ -1,0 +1,49 @@
+---
+- name: Upgrade the System
+  apt:
+    upgrade: yes
+    update_cache: yes
+
+- name: Remove Snapd
+  apt:
+    pkg: snapd
+    state: absent
+
+- name: Disable AppArmor
+  systemd:
+    name: apparmor
+    enabled: no
+
+- name: Change hostname to defined ansible variable
+  hostname:
+   name: "{{ inventory_hostname }}"
+
+    
+    
+###############changes by a.ansari############
+
+- name: stop resolved
+  service:
+    name: systemd-resolved
+    state: stopped 
+
+- name: dessable service
+  service:
+    name: systemd-resolved
+    enabled: no
+     
+
+- name: Deleted resolve
+  file:
+    state: absent 
+    path: "{{ resolve_path  }}"
+
+- name: Create the resolve config
+  copy:
+    dest:  "{{ resolve_path  }}" 
+    content:
+          nameserver 8.8.8.8 
+      
+        
+
+ 

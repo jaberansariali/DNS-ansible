@@ -1,0 +1,9 @@
+-- {{ ansible_managed }}
+
+-- *********** Servers Section ***********
+
+{% for backend in dnsdist_backend_servers %}
+-- {{ backend.name }}
+newServer({address="{{ backend.address }}", name="{{ backend.name }}"})
+{% endfor %}
+

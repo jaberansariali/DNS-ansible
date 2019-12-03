@@ -1,0 +1,93 @@
+############################################################################################################################
+############################################### Change based on your settings ##############################################
+############################################################################################################################
+
+################# Server Main IP Addresses #################
+server_private_ipv4_address: 192.168.123.32
+server_private_ipv4_netmask: /24
+server_private_ipv4_interface: ens19
+server_private_ipv4_gateway: 192.168.123.1
+
+server_public_ipv4_address: 192.168.122.32
+server_public_ipv4_netmask: /24
+server_public_ipv4_interface: ens18
+server_public_ipv4_gateway: 192.168.122.1
+
+
+## for keepalived
+server_float_ipv4_address: 192.168.122.100
+
+
+################# General DNS Variables ###################
+dns_master_ipv4_address: 192.168.123.31
+
+dns_tsig_slaves_id: 'slaves_key'
+dns_tsig_slaves_key: 'wc7svz+pt3suqsllnswrslpjs+zvvz0t8pzmoeuzqiwbvuv2aludxdlug6nvdbil'
+dns_tsig_slaves_algorithm: 'hmac-sha384'
+
+
+
+###########################################################################################################################
+########################################### DO NOT CHANGE ANYTHING BEYOND HERE ############################################
+###########################################################################################################################
+
+### Netplan Variables
+netplan_interfaces:
+  - interface: "{{ server_private_ipv4_interface }}"
+    ipv4:
+      configured: true
+      address: "{{ server_private_ipv4_address }}{{ server_private_ipv4_netmask }}"
+      gateway: "{{ server_private_ipv4_gateway }}"
+    dns:
+      nameservers:
+      - 4.2.2.4
+      - 8.8.8.8
+  - interface: "{{ server_public_ipv4_interface }}"
+    ipv4:
+      configured: true
+      address: "{{ server_public_ipv4_address }}{{ server_public_ipv4_netmask }}"
+      gateway: "{{ server_public_ipv4_gateway }}"
+    dns:
+      nameservers:
+      - 4.2.2.4
+      - 8.8.8.8
+
+
+
+################ DNSDist Variables ###################
+dnsdist_powerdns_repo_13:
+  apt_repo_origin: "repo.powerdns.com"
+  apt_repo: "deb [arch=amd64] http://repo.powerdns.com/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }}-dnsdist-13 main"
+  gpg_key: "http://repo.powerdns.com/FD380FBB-pub.asc"
+  gpg_key_id: "9FAAA5577E8FCF62093D036C1B0C6205FD380FBB"
+  yum_repo_baseurl: "http://repo.powerdns.com/centos/$basearch/$releasever/dnsdist-13"
+  yum_debug_symbols_repo_baseurl: "http://repo.powerdns.com/centos/$basearch/$releasever/dnsdist-13/debug"
+  name: "powerdns-dnsdist-13"
+
+dnsdist_install_repo: "{{ dnsdist_powerdns_repo_13 }}"
+
+dnsdist_listen_interfaces: 
+  - "{{ server_public_ipv4_address }}:53"
+  - "{{ server_float_ipv4_address }}:53"
+
+dnsdist_distibution_policy: "firstAvailable"
+
+dnsdist_backend_servers:
+  - { name: "knot-nsd", address: "{{ server_private_ipv4_address }}:53" }
+
+dnsdist_webserver_interfaces:
+  - "{{ server_private_ipv4_address }}:8080"
+
+
+################## KeepAliveD Variables ######################
+keepalived_test_domain: "."
+keepalived_auth_pass: "1111"
+keepalived_role: "BACKUP"
+keepalived_router_id: "52"
+keepalived_shared_iface: "{{server_public_ipv4_interface}}"
+keepalived_mgmt_iface: "{{server_private_ipv4_interface}}"
+keepalived_shared_ip: "{{ server_float_ipv4_address }}"
+keepalived_src_ip: "{{server_private_ipv4_address}}"
+keepalived_check_process: "keepalived"
+keepalived_priority: "90"
+keepalived_backup_priority: "50"

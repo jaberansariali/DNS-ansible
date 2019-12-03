@@ -1,0 +1,21 @@
+---
+
+- block:
+
+  - name: Prefix the version with the correct separator on Debian
+    set_fact:
+      _dnsdist_package_version: "={{ dnsdist_package_version }}"
+    when: ansible_os_family == 'Debian'
+
+  when: dnsdist_package_version != ''
+
+- name: Install dnsdist
+  package:
+    name: "{{ dnsdist_package_name }}{{ _dnsdist_package_version | default('') }}"
+    state: present
+
+- name: Install dnsdist debug symbols
+  package:
+    name: "{{ dnsdist_debug_symbols_package_name }}{{ _dnsdist_package_version | default('') }}"
+    state: present
+  when: dnsdist_install_debug_symbols_package

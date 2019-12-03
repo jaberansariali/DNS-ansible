@@ -1,0 +1,40 @@
+vrrp_script chk_health {
+  script "/etc/keepalived/dns-check.sh"
+  interval 2
+  fall 3
+  rise 2
+}
+
+vrrp_instance VRRP1 {
+  state {{ keepalived_role }}
+  interface {{ keepalived_mgmt_iface }}
+  virtual_router_id {{ keepalived_router_id }}
+  {% if keepalived_role.lower() == "master" %}
+  priority {{ keepalived_priority }}
+  {% else %}
+  priority {{ keepalived_backup_priority }}
+  {% endif %}
+  advert_int 1
+  nopreempt
+ 
+
+  mcast_src_ip {{ keepalived_src_ip }}
+
+
+  authentication {
+    auth_type PASS
+    auth_pass {{ keepalived_auth_pass }}
+  }
+
+ 
+  virtual_ipaddress {
+    {{ keepalived_shared_ip }} dev {{ keepalived_shared_iface }} label {{ keepalived_shared_iface }}:0
+  }
+
+ 
+  track_script {
+    chk_health
+  }
+
+  notify /etc/keepalived/notify.sh
+}

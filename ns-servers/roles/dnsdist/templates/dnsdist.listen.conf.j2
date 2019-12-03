@@ -1,0 +1,5 @@
+-- {{ ansible_managed }}
+
+{% for listen_interface in dnsdist_listen_interfaces %}
+addLocal("{{ listen_interface }}")
+{% endfor %}

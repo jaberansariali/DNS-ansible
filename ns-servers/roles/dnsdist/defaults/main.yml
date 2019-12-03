@@ -1,0 +1,29 @@
+---
+
+# By default no additional repository is added to the hosts to install dnsdist
+dnsdist_install_repo: ""
+
+# The name of the dnsdist package
+dnsdist_package_name: "{{ default_dnsdist_package_name }}"
+
+# Install a specific version of dnsdist
+# NB: The usage of this variable makes only sense on RedHat-like systems,
+#     where each YUM repository can contains multiple versions of the same package.
+dnsdist_package_version: ""
+
+# Install dnsdist debug symbols package
+dnsdist_install_debug_symbols_package: False
+
+# The name of the dnsdist debug symbols package
+dnsdist_debug_symbols_package_name: "{{ default_dnsdist_debug_symbols_package_name }}"
+
+dnsdist_service_overrides: {}
+# dnsdist_service_overrides:
+#   LimitNOFILE: 10000
+
+# State of the DNSdist service
+dnsdist_service_state: "started"
+dnsdist_service_enabled: "yes"
+
+# When True, disable the automated restart of the dnsdist service
+dnsdist_disable_handlers: False

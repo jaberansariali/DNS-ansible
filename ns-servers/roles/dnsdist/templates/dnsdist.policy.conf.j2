@@ -1,0 +1,4 @@
+-- {{ ansible_managed }}
+
+-- *********** Policy ***********
+setServerPolicy({{ dnsdist_distibution_policy|default('firstAvailable') }})
