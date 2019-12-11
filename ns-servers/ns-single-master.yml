@@ -13,8 +13,8 @@
    roles:
            #     - common
        #     - netplan
-            - mysql
+       #     - mysql
        #     - pdns
-       #     - dnsdist
+            - dnsdist
        #     - keepalived
        #     - reboot

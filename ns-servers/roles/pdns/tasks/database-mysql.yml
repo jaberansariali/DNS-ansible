@@ -18,34 +18,34 @@
     - python-mysqldb
   when: ansible_os_family == 'Debian'
 
-- name: Create the PowerDNS Authoritative Server MySQL databases
-  mysql_db:
-    login_user: "{{ item['value']['priv_user'] }}"
-    login_password: "{{ item['value']['priv_password'] }}"
-    login_host: "{{ item['value']['host'] }}"
-    login_port: "{{ item['value']['port'] | default('3306') }}"
-    name: "{{ item['value']['dbname'] }}"
-    state: present
-  when: "item.key.split(':')[0] == 'gmysql'"
-  with_dict: "{{ pdns_backends | combine(pdns_mysql_databases_credentials, recursive=True) }}"
-
-- name: Grant the PowerDNS Authoritative Server access to the MySQL databases
-  mysql_user:
-    login_user: "{{ item[0]['priv_user'] }}"
-    login_password: "{{ item[0]['priv_password'] }}"
-    login_host: "{{ item[0]['host'] }}"
-    login_port: "{{ item[0]['port'] | default('3306') }}"
-    name: "{{ item[0]['user'] }}"
-    password: "{{ item[0]['password'] }}"
-    host: "{{ item[1] }}"
-    priv: "{{ item[0]['dbname'] }}.*:ALL"
-    append_privs: yes
-    state: present
-  with_subelements:
-    - "{{ pdns_backends | combine(pdns_mysql_databases_credentials, recursive=True) }}"
-    - priv_host
-    - skip_missing: yes
-
+  #- name: Create the PowerDNS Authoritative Server MySQL databases
+  #  mysql_db:
+  #    login_user: "{{ item['value']['priv_user'] }}"
+  #    login_password: "{{ item['value']['priv_password'] }}"
+  #    login_host: "{{ item['value']['host'] }}"
+  #    login_port: "{{ item['value']['port'] | default('3306') }}"
+  #    name: "{{ item['value']['dbname'] }}"
+  #    state: present
+  #  when: "item.key.split(':')[0] == 'gmysql'"
+  #  with_dict: "{{ pdns_backends | combine(pdns_mysql_databases_credentials, recursive=True) }}"
+  #
+  #- name: Grant the PowerDNS Authoritative Server access to the MySQL databases
+  #  mysql_user:
+  #    login_user: "{{ item[0]['priv_user'] }}"
+  #    login_password: "{{ item[0]['priv_password'] }}"
+  #    login_host: "{{ item[0]['host'] }}"
+  #    login_port: "{{ item[0]['port'] | default('3306') }}"
+  #    name: "{{ item[0]['user'] }}"
+  #    password: "{{ item[0]['password'] }}"
+  #    host: "{{ item[1] }}"
+  #    priv: "{{ item[0]['dbname'] }}.*:ALL"
+  #    append_privs: yes
+  #    state: present
+  #  with_subelements:
+  #    - "{{ pdns_backends | combine(pdns_mysql_databases_credentials, recursive=True) }}"
+  #    - priv_host
+  #    - skip_missing: yes
+  #
 - name: Check if the PowerDNS Authoritative Server MySQL databases are empty
   command: >
     mysql --user="{{ item['value']['user'] }}" --password="{{ item['value']['password'] }}"
