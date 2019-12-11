@@ -1,0 +1,43 @@
+---
+################### Write by a.ansari#################################
+- name: Create powerdns Databases
+  mysql_db:
+          name: powerdns
+          state: present
+- name: Create powerdns database user and assign privilages
+  mysql_user:
+          name: powerdns
+          password: fwutech
+          priv: 'powerdns.*:ALL,GRANT'
+          state: present 
+- name: Flush the privilage 
+  command: mysql -NBe 'FLUSH PRIVILEGES;'
+
+  #- name: crate table domains
+  #  postgresql_table:
+  #          id: 'INT AUTO_INCREMENT'
+  #          name: 'VARCHAR(255) NOT NULL'
+  #          master: 'VARCHAR(128) DEFAULT NULL'
+  #          last_check: 'INT DEFAULT NULL'
+  #          type: 'VARCHAR(6) NOT NULL'
+  #          notified_serial: 'INT UNSIGNED DEFAULT NULL'
+  #          account: "VARCHAR(40) CHARACTER SET 'utf8' DEFAULT NULL"
+
+- name: Copy mysql config for powerdns
+  copy:
+          src: /root/ansible/sample/Ansible/ns-servers/roles/mysql/tasks/pdn-conf.mysql
+          dest: /root/.pdns-conf
+          owner: root
+          group: root
+          mode: '0600' 
+
+
+
+
+
+
+- name: create table domains
+  mysql_db: 
+          name: powerdns
+          state: import
+          target: /root/.pdns-conf 

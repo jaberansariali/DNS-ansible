@@ -11,8 +11,11 @@ mysql_root_username: root
 mysql_root_password: root
 
 # Set this to `true` to forcibly update the root password.
-mysql_root_password_update: false
-mysql_user_password_update: false
+#mysql_root_password_update: false
+#mysql_user_password_update: false
+
+mysql_root_password_update: true
+mysql_user_password_update: true 
 
 mysql_enabled_on_startup: true
 
@@ -116,6 +119,13 @@ mysql_users: []
 #     host: 127.0.0.1
 #     password: secret
 #     priv: *.*:USAGE
+#    - name: Set root user Password
+#      mysql_user: 
+#           name: root
+#           host: localhost
+#           password: '123456'
+#           state: present
+##############################
 
 # Replication settings (replication is only enabled if master/user have values).
 mysql_server_id: "1"

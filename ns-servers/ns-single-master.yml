@@ -11,9 +11,9 @@
 
  
    roles:
-     - common
+           #     - common
        #     - netplan
-       #     - mysql
+            - mysql
        #     - pdns
        #     - dnsdist
        #     - keepalived

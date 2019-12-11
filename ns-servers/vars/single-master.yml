@@ -111,4 +111,3 @@ keepalived_backup_priority: "50"
 
 #########################added by a.ansari#######################################
 resolve_path: /etc/resolv.conf
-
