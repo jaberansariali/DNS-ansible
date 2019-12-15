@@ -58,9 +58,9 @@
     mode: 0750
   when: "pdns_config['include-dir'] is defined"
 
-- name: Delete the default pdns.local.conf
+- name: Delete the default pdns.local.gmysql.conf
   file: 
-    path: /etc/powerdns/pdns.d/pdns.local.conf
+    path: /etc/powerdns/pdns.d/pdns.local.gmysql.conf
     state: absent
  
 
