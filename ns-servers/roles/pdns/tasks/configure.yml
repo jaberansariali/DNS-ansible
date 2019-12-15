@@ -16,10 +16,11 @@
       owner: root
       group: root
     notify: reload systemd and restart PowerDNS
-
+  
   when: pdns_service_overrides != {}
     and ansible_service_mgr == "systemd"
 
+########write by a.ansari###########
 - name: Ensure that the PowerDNS Authoritative Server configuration directory exists
   file:
     name: "{{ pdns_config_dir }}"
@@ -28,6 +29,17 @@
     group: "root"
     mode: 0750
 
+
+
+- name: Generate the PowerDNS bind configuration
+  template:
+    src: pdns.bindconf.j2
+    dest: "{{ pdns_bind_config }}/{{ pdns_bind_file }}"
+    owner: "root"
+    group: "root"
+    mode: 0640
+ 
+
 - name: Generate the PowerDNS Authoritative Server configuration
   template:
     src: pdns.conf.j2
@@ -35,7 +47,7 @@
     owner: "root"
     group: "root"
     mode: 0640
-  notify: restart PowerDNS
+    #    notify: restart PowerDNS
 
 - name: Ensure that the PowerDNS Authoritative Server 'include-dir' directory exists
   file:
@@ -45,3 +57,15 @@
     group: "root"
     mode: 0750
   when: "pdns_config['include-dir'] is defined"
+
+- name: Delete the default pdns.local.conf
+  file: 
+    path: /etc/powerdns/pdns.d/pdns.local.conf
+    state: absent
+ 
+
+- name: Delete the default bind.conf 
+  file: 
+    path: /etc/powerdns/pdns.d/bind.conf
+    state: absent
+  notify: restart PowerDNS

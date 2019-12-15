@@ -78,7 +78,8 @@ pdns_disable_handlers: False
 # PowerDNS Authoritative Server configuration file and directory
 pdns_config_dir: "{{ default_pdns_config_dir }}"
 pdns_config_file: "pdns.conf"
-
+pdns_bind_config: "/etc/powerdns/pdns.d"
+pdns_bind_file: "pdns.local.conf"
 # Ddict containing all configuration options, except for backend
 # configuration and the "config-dir", "setuid" and "setgid" directives.
 pdns_config: {}
@@ -140,3 +141,38 @@ pdns_mysql_databases_credentials: {}
 # NOTE: Requries the SQLite CLI tools to be available in the machine and the gsqlite3
 # backend to be installed on the machine.
 pdns_sqlite_databases_locations: []
+
+
+############################################Write by a.ansari##########################################################################
+########################################### This var it just for powerdns config if you want change plz change justs values ###########
+#sample X.X.X.X/X ip with subnet
+ip_axfr: "192.168.123.0/24"
+dnsupdate_ip: "192.168.123.0/24"
+notify_ip: "192.168.123.0/24"
+###without subnet###########
+also_notify: "192.168.123.41,127.0.0.1"
+api_key: "hE0z215TrS2pGx6drDWNzLnNbyFBGrSF"
+include_dir: "/etc/powerdns/pdns.d"
+launch: |-
+            local-address=192.168.123.41,127.0.0.1
+               local-ipv6=
+               master=yes
+slave_parametr: "no"
+slave_cycle_interval: "10"
+slave_renotify: "yes"
+webserver: "yes"
+###without subnet###########
+webserver_addr: "0.0.0.0"
+webserver_allow_from: "127.0.0.1,0.0.0.0/0"
+
+################Variable for the POWERdns bind#########################
+gmysql_host: "localhost"
+gmysql_port: "3306"
+gmysql_dbname: "powerdns"
+gmysql_user: "powerdns"
+gmysql_pass: "fwutech"
+gmysql_dnssec: "yes"
+
+             
+
+ 
