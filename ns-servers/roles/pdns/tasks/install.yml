@@ -32,7 +32,7 @@
   #  when: pdns_backends_packages[item.key.split(':')[0]] is defined
   #  with_dict: "{{ pdns_backends }}"
 ########################write by a.ansari ###################
-#ATTANTION IT JUST INSTALL PDNS SERVER BACKEND FOR UBUNTO#
+#ATTANTION IT JUST INSTALL PDNS SERVER BACKEND FOR UBUNTU#
 - name: Install the PowerDNS Authoritative Server backends
   apt:
           name: pdns-backend-mysql

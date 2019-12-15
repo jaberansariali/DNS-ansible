@@ -13,9 +13,9 @@
    roles:
            #     - common
        #     - netplan
-       #     - mysql
-            - pdns
+            - mysql
+       #     - pdns
        #     - dnsdist
        ########## ignore this for ever     - keepalived
-            - service
+       #     - service
        #     - reboot

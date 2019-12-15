@@ -30,14 +30,21 @@
           owner: root
           group: root
           mode: '0600' 
-
-
-
-
-
+#######################test from ##############
+- name: check if DB exists
+  shell: mysql -e 'SHOW DATABASES;' | grep powerdns
+  register: dbstatus
+  failed_when: dbstatus.rc == 2
 
 - name: create table domains
   mysql_db: 
           name: powerdns
           state: import
           target: /root/.pdns-conf 
+  when: dbstatus.rc == 1 
+#############tooooooooooooooo###########
+#- name: create table domains
+#  mysql_db: 
+#          name: powerdns
+#          state: import
+#          target: /root/.pdns-conf 
