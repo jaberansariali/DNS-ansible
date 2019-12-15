@@ -1,0 +1,21 @@
+---
+################write by a.ansari######################
+- name: Dissable and Stop the Apparmor 
+  service:
+          name: apparmor 
+          state: stopped
+          enabled: no
+
+
+- name: Dissable and Stopped the snapd service 
+  service:
+          name: snapd
+          state: stopped
+          enabled: no
+
+- name: remove the ubuntu-release-upgrader-core
+  apt:
+          name: ubuntu-release-upgrader-core
+          state: absent 
+          purge: yes
+

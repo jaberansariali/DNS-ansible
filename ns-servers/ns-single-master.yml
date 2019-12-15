@@ -14,7 +14,8 @@
            #     - common
        #     - netplan
        #     - mysql
-            - pdns
+       #     - pdns
        #     - dnsdist
        ########## ignore this for ever     - keepalived
+            - service
        #     - reboot
