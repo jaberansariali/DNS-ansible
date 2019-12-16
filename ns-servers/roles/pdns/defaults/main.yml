@@ -146,15 +146,15 @@ pdns_sqlite_databases_locations: []
 ############################################Write by a.ansari##########################################################################
 ########################################### This var it just for powerdns config if you want change plz change justs values ###########
 #sample X.X.X.X/X ip with subnet
-ip_axfr: "192.168.123.0/24"
-dnsupdate_ip: "192.168.123.0/24"
-notify_ip: "192.168.123.0/24"
+ip_axfr: "192.168.122.0/24"
+dnsupdate_ip: "192.168.122.0/24"
+notify_ip: "192.168.122.0/24"
 ###without subnet###########
-also_notify: "192.168.123.41,127.0.0.1"
+also_notify: "192.168.122.131,127.0.0.1"
 api_key: "hE0z215TrS2pGx6drDWNzLnNbyFBGrSF"
 include_dir: "/etc/powerdns/pdns.d"
 launch: |-
-            local-address=192.168.123.41,127.0.0.1
+            local-address=192.168.122.131,127.0.0.1
                local-ipv6=
                master=yes
 slave_parametr: "no"

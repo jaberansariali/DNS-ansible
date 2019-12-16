@@ -11,11 +11,11 @@
 
  
    roles:
-           #     - common
-       #     - netplan
+            - common
+              # - netplan
             - mysql
-       #     - pdns
-       #     - dnsdist
+            - pdns
+            - dnsdist
        ########## ignore this for ever     - keepalived
-       #     - service
-       #     - reboot
+            - service
+            - reboot

@@ -85,6 +85,24 @@
   changed_when: false
   check_mode: false
 
+############added by a.ansari####################
+- name: install python2-pip
+  package:
+          name: python-pip
+          state: present  
+
+
+- name: install python3-pip
+  package:
+          name: python3-pip
+          state: present  
+
+- name: Make sure pymysql is present
+  pip:
+    name: pymysql
+    state: present
+
+
 - name: Remove anonymous MySQL users.
   mysql_user:
     name: ""
