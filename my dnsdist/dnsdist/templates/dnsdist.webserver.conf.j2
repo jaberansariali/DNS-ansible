@@ -1,0 +1,6 @@
+-- {{ ansible_managed }}
+
+-- *********** WebServer ***********
+{% for web_interface in dnsdist_webserver_interfaces %}
+webserver("{{ web_interface }}", "FWUTech")
+{% endfor %}
