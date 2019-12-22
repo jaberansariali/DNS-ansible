@@ -12,8 +12,16 @@ server_public_ipv4_address: 192.168.122.31
 server_public_ipv4_netmask: /24
 server_public_ipv4_interface: ens18
 server_public_ipv4_gateway: 192.168.122.1
+#################################Write by a.ansari bond's ip set ###############################
+server_bond_ipv4_address: 192.168.160.200
+server_bond_ipv4_netmask: /24
+server_bond_ipv4_interface: bond0
+server_bond_ipv4_gateway: 192.168.160.1
+server_bond_ipv4_interface1: ens6
+server_bond_ipv4_interface2: ens7
+server_bond_parametr: 802.3ad
 
-
+################################################################################################
 ## for keepalived
 server_float_ipv4_address: 192.168.122.100
 
@@ -54,6 +62,24 @@ netplan_interfaces:
       nameservers:
       - 4.2.2.4
       - 8.8.8.8
+##############################Write by a.ansari###############################
+netplan_Binterfaces:
+  - interface: "{{ server_bond_ipv4_interface }}"
+    interface1: "{{ server_bond_ipv4_interface1 }}"
+    interface2: "{{ server_bond_ipv4_interface2 }}"
+    parametr: "{{ server_bond_parametr }}"
+    dns:
+    ipv4:
+      configured: true
+      address: "{{ server_bond_ipv4_address }}{{ server_bond_ipv4_netmask }}"
+      gateway: "{{ server_bond_ipv4_gateway }}"
+      nameservers:
+      - 8.8.8.8
+      - 8.8.4.4
+
+############################
+
+
 
 ############### MySQL Variables ######################
 mysql_root_password: PowerDNS@FW
