@@ -30,6 +30,9 @@ network:
 {% else %}
       dhcp6: false
 {% endif %}
+      interfaces:
+        - {{ item.interface1 }}
+        - {{ item.interface2 }}
 {% if (item.ipv4 is defined and item.ipv4.configured is defined and item.ipv4.configured and item.ipv4.address is defined and item.ipv4.address) or (item.ipv6 is defined and item.ipv6.configured is defined and item.ipv6.configured and item.ipv6.address is defined and item.ipv6.address) %}
       addresses:
 {% endif %}

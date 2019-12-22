@@ -2,6 +2,20 @@
 # tasks file for netplan-networking
 
 ###################write by a.ansari###############################
+- name: Install ifenslave 
+  apt:
+    name: ifenslave
+    state: present
+
+- name: Change the modeprobe to bonding 
+  modprobe:
+      name: bonding
+      state: present 
+
+- name: Added Bonding mode in kernel 
+  shell: |
+          echo 'bonding' >> /etc/modules
+
 - name: Configure bonding network interface
   become: true
   template:
